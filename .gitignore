@@ -1,0 +1,25 @@
+# Environnement virtuel
+.venv/
+venv/
+env/
+
+# Cache Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Donnees reelles (ne pas pousser sur un depot public)
+spectre.xlsx
+capacite.xlsx
+capacité.xlsx
+*.xlsm
+
+# Archives
+*.zip
+
+# Streamlit cache local
+.streamlit/secrets.toml
+
+# Fichiers temporaires
+_peek.py
+~$*.xlsx
