@@ -187,26 +187,25 @@ st.metric("T_B detecte (fin du plateau d'acceleration constante)", f"{TB:.3f} s"
 # Unit check expander
 # ---------------------------------------------------------------------------
 with st.expander("Verification de coherence des unites et formules appliquees"):
+    st.markdown("**Spectre ADRS** (Sd en mm)")
+    st.latex(r"S_d(T)\,[\text{mm}] = S_a(T)\,[g] \times 9{,}81 \times \left(\frac{T}{2\pi}\right)^2 \times 1000")
+
+    st.markdown("**Courbe de capacite → ADRS**")
+    st.latex(r"S_a\,[g] = \frac{V\,[\text{kN}]}{\Gamma \cdot m_1^*\,[\text{t}] \cdot g} \qquad S_d\,[\text{mm}] = \frac{\delta\,[\text{mm}]}{\Gamma \cdot \varphi_{1,\text{toit}}}")
+
+    st.markdown("**Periode du systeme equivalent**")
+    st.latex(r"T^*\,[\text{s}] = 2\pi\sqrt{\frac{S_{d,y}\,[\text{mm}]}{S_{a,y}\,[g] \times 9810}}")
+
+    st.markdown("**Point de performance** (Eq. 5B.13)")
+    st.latex(r"S_{d1,\max} = C_R \cdot S_{de}(T_1) \qquad \delta_{\text{cible}} = S_{d1,\max} \cdot \Gamma_1 \cdot \varphi_{\text{toit}}")
+
     st.markdown(f"""
-**Spectre ADRS** (Sd en mm)
-$$S_d(T)\\,[\\text{{mm}}] = S_a(T)\\,[g] \\times 9{{,}}81 \\times \\left(\\frac{{T}}{{2\\pi}}\\right)^2 \\times 1000$$
-
-**Courbe de capacite → ADRS**
-$$S_a\\,[g] = \\frac{{V\\,[\\text{{kN}}]}}{{\\Gamma \\cdot m_1^*\\,[\\text{{t}}] \\cdot g}} \\qquad
-S_d\\,[\\text{{mm}}] = \\frac{{\\delta\\,[\\text{{mm}}]}}{{\\Gamma \\cdot \\varphi_{{1,\\text{{toit}}}}}}$$
-
-**Periode du systeme equivalent**
-$$T^*\\,[\\text{{s}}] = 2\\pi\\sqrt{{\\frac{{S_{{d,y}}\\,[\\text{{mm}}]}}{{S_{{a,y}}\\,[g] \\times 9810}}}}$$
-
-**Point de performance** (Eq. 5B.13)
-$$S_{{d1,\\max}} = C_R \\cdot S_{{de}}(T_1) \\qquad \\delta_{{\\text{{cible}}}} = S_{{d1,\\max}} \\cdot \\Gamma_1 \\cdot \\varphi_{{\\text{{toit}}}}$$
-
 | Grandeur | Valeur | Unite |
 |---|---|---|
 | delta sommet max (SAP2000) | {delta_raw[-1]:.1f} | mm |
 | V base max | {V_raw[-1]:.1f} | kN |
 | Gamma1 | {gamma1:.4f} | — |
-| M1* | {M1eff:.1f} | t |
+| M₁* | {M1eff:.1f} | t |
 | Sa max = V/(Gamma·M1*·g) | {a1[-1]:.4f} | g |
 | Sd max = delta/(Gamma·phi) | {d1[-1]:.2f} | mm |
 """)
