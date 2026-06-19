@@ -1,76 +1,74 @@
-# N2 Pushover — TBDY 2018 Annexe 5B
+# N2 Pushover — TBDY 2018 Annex 5B
 
-Application Streamlit implémentant la méthode N2 de poussée progressive pour l'évaluation sismique de bâtiments existants, conformément à l'**Annexe 5B du règlement parasismique turc TBDY 2018**.
-
----
-
-## Objectif
-
-Déterminer le **point de performance** (déplacement cible) d'un bâtiment à partir de sa courbe de capacité V–δ et du spectre élastique de calcul, selon la procédure normative TBDY 2018 art. 5B.3 (Éq. 5B.12 à 5B.17).
-
-L'application couvre :
-- Transformation V–δ → diagramme de capacité modale (système 1 DDL)
-- Conversion du spectre au format ADRS (Éq. 2.5)
-- Bilinéarisation à aires égales selon deux règles (sécante / tangente initiale)
-- Calcul itératif de C_R (cas T₁ ≤ T_B, art. 5B.3.5b)
-- Tracé ADRS interactif (Plotly) conforme aux Şekil 5B.3 et 5B.4
-- Tableau de convergence passe par passe
-- Alertes réglementaires art. 5B.3.6 (faille proche, pente négative)
+A Streamlit application implementing the N2 nonlinear static pushover method for seismic assessment of existing buildings, in strict conformance with **Annex 5B of the Turkish Seismic Building Code (TBDY 2018)**.
 
 ---
 
-## Utilisation
+## Overview
 
-### 1. Installer les dépendances
+The application determines the **performance point** (target displacement) of a building from its pushover capacity curve V–δ and the elastic response spectrum, following the normative procedure of TBDY 2018 art. 5B.3 (Eq. 5B.12 to 5B.17).
+
+**Features:**
+- Transformation of V–δ curve to modal capacity diagram (equivalent SDOF system)
+- Elastic spectrum conversion to ADRS format (Eq. 2.5)
+- Equal-area bilinearisation with two rules displayed in parallel (secant / initial tangent)
+- Iterative computation of C_R for the rigid-structure case T₁ ≤ T_B (art. 5B.3.5b)
+- Interactive ADRS plot (Plotly) compliant with Şekil 5B.3 and 5B.4
+- Iteration-by-iteration convergence table
+- Regulatory alerts per art. 5B.3.6 (near-fault, negative post-yield slope)
+
+---
+
+## Getting Started
+
+### 1. Install dependencies
 
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows : .venv\Scripts\activate
+source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-### 2. Lancer l'application
+### 2. Run the application
 
 ```bash
 streamlit run app.py
 ```
 
-### 3. Entrées requises
+### 3. Required inputs
 
-| Entrée | Format | Unité |
+| Input | Format | Unit |
 |---|---|---|
-| Spectre élastique | CSV `T,Sae` | T en s, Sae en g |
-| Courbe de capacité | CSV `delta,V` | δ en mm, V en kN |
-| Γ₁ (facteur de participation) | champ numérique | — |
-| M₁* (masse modale effective) | champ numérique | t |
-| φ_sommet (composante modale) | champ numérique | — |
-| Distance faille active | champ numérique | km |
+| Elastic spectrum | CSV `T,Sae` | T in s, Sae in g |
+| Capacity curve | CSV `delta,V` | δ in mm, V in kN |
+| Γ₁ (modal participation factor) | numeric field | — |
+| M₁* (effective modal mass) | numeric field | t |
+| φ_top (normalised modal component at roof) | numeric field | — |
+| Distance to nearest active fault | numeric field | km |
 
 ---
 
-## Structure du projet
+## Project Structure
 
 ```
-app.py          → interface Streamlit
-n2_calc.py      → moteur de calcul (fonctions pures)
-_test_calc.py   → tests unitaires
-requirements.txt
+app.py            → Streamlit interface
+n2_calc.py        → Calculation engine (pure functions)
+_test_calc.py     → Unit tests
+requirements.txt  → Python dependencies
 ```
 
 ---
 
-## Conformité normative
+## Normative Compliance
 
-Toutes les équations sont issues exclusivement du **TBDY 2018**, Annexe 5B. Aucun critère d'un autre référentiel (Eurocode 8, ATC-40, ASCE 41) n'est utilisé.
-
-Niveau de performance cible pour bâtiment acier existant courant (DTS 1–4, BYS ≥ 2) : **KH / LS** sous DD-2 (Tableau 3.4c).
+All equations are sourced exclusively from **TBDY 2018**, Annex 5B. No criteria from other standards (Eurocode 8, ATC-40, ASCE 41) are used.
 
 ---
 
-## Périmètre et limites
+## Scope and Limitations
 
-L'application s'arrête au point de performance et au déplacement cible δ_cible. Elle ne calcule pas :
-- les drifts inter-étages
-- la vérification des rotules plastiques (Tableau 5C.4)
+The application outputs the performance point and the target roof displacement δ_target. It does not compute:
+- Inter-storey drift ratios
+- Plastic hinge acceptance checks (Table 5C.4)
 
-Ces vérifications nécessitent les déplacements par niveau et l'état des rotules issus du logiciel de calcul (SAP2000, Robot Structural Analysis).
+These verifications require floor-level displacements and hinge states from the structural analysis software (SAP2000, Robot Structural Analysis).
